@@ -12,6 +12,7 @@ namespace LibraryOOP.Library
         private bool _isAvailable {get; set;}
         private DateTime _borrowDate {get; set;}
         private DateTime _returnDate {get; set;}
+        private DateTime _expectedAvailabilityDate {get; set;}
         public Book(string title, Author author, string category)
         {
             _uniqueID = Guid.NewGuid(); _title = title; _author = author; _category = category; _isAvailable = true;
@@ -22,25 +23,24 @@ namespace LibraryOOP.Library
         public bool IsAvailable(){
             return _isAvailable;
         }
-        /*public void SetBookAvailability(bool bookOnShelve){
-            _isAvailable = bookOnShelve;
-        }
-        public void BorrowDate(){
-            _borrowDate = DateTime.UtcNow;
-        }*/
 
-        public void GiveBookOut(){
+        public void GiveBookOut(int numberOfDaysToBorrow){
             _isAvailable = false;
             _borrowDate = DateTime.UtcNow;
+            _expectedAvailabilityDate = DateTime.UtcNow.AddDays(numberOfDaysToBorrow);
         }
 
         public void ReturnBookToShelf(){
          _isAvailable = true;
-        _borrowDate = DateTime.UtcNow;
+        _returnDate = DateTime.UtcNow;
         }
 
         public Guid uniqueID(){
             return _uniqueID;
+        }
+
+        public DateTime ExpectedAvailabilityDate(){
+            return _expectedAvailabilityDate;
         }
     }
 };

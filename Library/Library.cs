@@ -18,7 +18,7 @@ namespace LibraryOOP.Library
             _books.Add(new Book("Title 10",new Author("Author 10","10/10/2000"),"Category 10"));
         }
 
-        public void AddNewBook(Book bookToAdd){
+        public void AddNewBookToLibrary(Book bookToAdd){
             _books.Add(bookToAdd);
         }
 
@@ -30,20 +30,30 @@ namespace LibraryOOP.Library
             return true;
         }
 
-        public bool BorrowBook( string title){
+        public bool BorrowBook( string title, int numberOfDaysToBorrow){
             Book bookToBorrow = _books.FirstOrDefault(b => b.Title().ToLower() == title.ToLower() && b.IsAvailable());
             if(bookToBorrow is not null){
-                bookToBorrow.GiveBookOut();
+                bookToBorrow.GiveBookOut(numberOfDaysToBorrow);
                 return true;
             }
             return false;
         }
 
+        public string uniqueIDOfBorrowedBook(string title){
+            Book bookToBorrow = _books.FirstOrDefault(b => b.Title().ToLower() == title.ToLower());
+            return bookToBorrow.uniqueID().ToString();
+        }
+
+        public string ExpectedbookavailabilityDate(string title){
+            Book bookToBorrow = _books.FirstOrDefault(b => b.Title().ToLower() == title.ToLower());
+            return bookToBorrow.ExpectedAvailabilityDate().ToString();
+        }
+
         public bool ReturnBook(string uniqueID){
             Book bookToReturn = _books.FirstOrDefault(b => b.uniqueID().ToString() == uniqueID);
-
-            if(bookToReturn is not null){
+            if(bookToReturn is not null && !bookToReturn.IsAvailable()){
                 bookToReturn.ReturnBookToShelf();
+                return true;
             }
             return false;
         }
